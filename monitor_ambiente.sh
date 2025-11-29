@@ -7,20 +7,20 @@ printf "Digite qual repositório acessar: "
 # read é como o 'scanf' em C, ele pode ser usado para receber valores de uma variável.
 
 if [ -d "$rep_choice" ]; then
-    printf "Sucesso! Diretório existe.\n"
 	if [ -x "$rep_choice" ] && [ -w "$rep_choice" ] && [ -r "$rep_choice" ]; then
-   	 printf "Sucesso! Você tem todas as permissões necessárias nesse diretório.\n"
-     	uso_porcentagem=$(df -h / | grep / | awk '{print $5}' | tr -d '%')
-	if [ "$uso_porcentagem" -gt 90 ]; then
-		printf "Situação crítica! Mais de 90%% do espaço usado\n"	 
-    elif [ "$uso_porcentagem" -gt 75 ]; then
-	printf "Atenção! Mais de 75%% de uso de memória\n"
-    else
-	printf "Memória em uso normal!\n"
-    fi	
+		printf "\nSucesso! O usuário tem todas as opções necessárias.\n\n"
 	else
-       printf  "Aviso! Você não tem todas as permissões necessárias nesse diretório."
-       fi
+		printf "Atenção! O usuário não tem todas as permissões necessárias.\n\n"
+	fi
+
+uso_porcentagem=$(df -h / | grep / | awk '{print $5}' | tr -d '%')
+	if [ "$uso_porcentagem" -gt 90 ]; then
+		printf "Situação crítica! Mais de 90%% de espaço do servidor ocupado\n\n"	 
+	elif [ "$uso_porcentagem" -gt 75 ]; then
+		printf "Atenção! Mais de 75%% de espaço do  servidor ocupado\n\n"
+	else
+		printf "Situação normal! Menos de 75% de espaço do servidor ocupado!\n\n"
+	fi	
        
 else
     printf "Erro! O diretório não existe."
