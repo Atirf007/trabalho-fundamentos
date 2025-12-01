@@ -1,7 +1,9 @@
 #!/bin/bash  
 # a linha acima declara o bin que executará o script
+start=$(date +%s)
+#estou atribuindo o resultado numérico do parenteses para a variável start que é o tempo em seg desde a Unix Epoch(muito tempo)
 
-printf "Digite o nome do repositório que será utilizado para instalação:  "
+printf "Digite o nome do diretório que será utilizado para instalação:  "
 read rep_choice
 
 # read é como o 'scanf' em C, ele pode ser usado para receber valores de uma variável.
@@ -15,6 +17,10 @@ if [ -d "$rep_choice" ]; then
 		printf "Atenção! O usuário não tem todas as permissões necessárias.\n\n"
 	fi
 
+	printf "Tamanho total do diretório $rep_choice: "  
+du -sh "$rep_choice" 2>/dev/null | awk '{print $1}'  
+printf "\n"
+#du é disk usage vendo quanto espaço o dir ocupa em disco, 2> manda os possíveis erros para dev/null sem exibi-los, prep envia a saída de du para awk e awk faz parecido com grep, mas mais robusto.
 uso_porcentagem=$(df -h / | grep / | awk '{print $5}' | tr -d '%')
 # df -h extraí dados detalhados de uso de armazenamento | grep / extraí dados da partição raiz | awk '{printf $5}' extraí dados da quinta coluna da linha selecionada, no caso a coluna 'use%' | tr -d '%' remove o símbolo de porcentagem na hora de atribuir um valor a variável, facilitando na hora de fazer comparações.
 
@@ -47,3 +53,10 @@ else
     printf "\nErro! O diretório não existe.\n\n"
     exit 1
 fi
+
+end=$(date +%s)
+#a end agora recebe a mesma coisa que a start, mas acrescido os segundos desde que a start foi acionada
+
+echo "Tempo total: $((end - start)) segundos"
+
+#Mostra o tempo total tirando da end o que tinha na start
