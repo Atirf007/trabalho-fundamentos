@@ -12,7 +12,7 @@ read rep_choice
 if [ -d "$rep_choice" ]; then
 	if [ -x "$rep_choice" ] && [ -w "$rep_choice" ] && [ -r "$rep_choice" ]; then
 	# Os comparadores verificam respectivamente se o o usuário logado tem permissão de executar, escrever e ler o arquivo selecionado.
-		printf "\nSucesso! O usuário tem todas as opções necessárias.\n\n"
+		printf "\nSucesso! O usuário tem todas as permissões necessárias.\n\n"
 	else
 		printf "Atenção! O usuário não tem todas as permissões necessárias.\n\n"
 	fi
