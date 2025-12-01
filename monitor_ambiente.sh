@@ -1,4 +1,4 @@
-#!/bin/sh  
+#!/bin/bash  
 # a linha acima declara o bin que executará o script
                           
 printf "Digite qual repositório acessar: "
@@ -13,17 +13,30 @@ if [ -d "$rep_choice" ]; then
 		printf "Atenção! O usuário não tem todas as permissões necessárias.\n\n"
 	fi
 
-uso_porcentagem=$(df -h / | grep / | awk '{print $5}' | tr -d '%')
+	uso_porcentagem=$(df -h / | grep / | awk '{print $5}' | tr -d '%')
 	if [ "$uso_porcentagem" -gt 90 ]; then
 		printf "Situação crítica! Mais de 90%% de espaço do servidor ocupado\n\n"	 
 	elif [ "$uso_porcentagem" -gt 75 ]; then
 		printf "Atenção! Mais de 75%% de espaço do  servidor ocupado\n\n"
 	else
-		printf "Situação normal! Menos de 75% de espaço do servidor ocupado!\n\n"
+		printf "Situação normal! Menos de 75%% de espaço do servidor ocupado!\n\n"
 	fi	
        
+	numProcessos=$(ps aux --no-headers | wc -l)
+
+	printf "\nAtualmente há $numProcessos processos sendo executados\n\n"
+
+	printf "Processos que mais consomem memória: \n"
+
+	for i in {1..5}
+	do
+		printf "$i |"
+		ps -e -o pid,comm --sort=-%mem --no-headers|awk -v i=$i 'NR==i{print; exit}'
+	done
+
+	printf "\n"
+
 else
     printf "Erro! O diretório não existe."
     exit 1
 fi
-
