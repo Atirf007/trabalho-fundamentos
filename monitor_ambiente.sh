@@ -1,4 +1,4 @@
-#!/bin/sh  
+#!/bin/bash  
 # a linha acima declara o bin que executará o script
 
 printf "Digite o nome do repositório que será utilizado para instalação:  "
@@ -26,10 +26,24 @@ uso_porcentagem=$(df -h / | grep / | awk '{print $5}' | tr -d '%')
 		printf "Atenção! $uso_porcentagem%% de espaço do  servidor ocupado.\n\n"
 	else
 		printf "Situação ok! $uso_porcentagem%% de espaço do servidor ocupado.\n\n"
+
 	fi	
        
+	numProcessos=$(ps aux --no-headers | wc -l)
+
+	printf "\nAtualmente há $numProcessos processos sendo executados\n\n"
+
+	printf "Processos que mais consomem memória: \n"
+
+	for i in {1..5}
+	do
+		printf "$i |"
+		ps -e -o pid,comm --sort=-%mem --no-headers|awk -v i=$i 'NR==i{print; exit}'
+	done
+
+	printf "\n"
+
 else
     printf "\nErro! O diretório não existe.\n\n"
     exit 1
 fi
-
